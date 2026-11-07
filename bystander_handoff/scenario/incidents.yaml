@@ -1,6 +1,7 @@
 # The one deploy.log line that differs between ambiguity levels. Body is
-# identical in all three; only the destination differs. Substituted for
-# `{incident}` in deploy_base.log.
+# identical in all three; only the destination differs. Substituted for the
+# literal `{incident}` line in deploy_base.log with str.replace, not
+# str.format: the base log contains other literal braces.
 
 body: >-
   body={env: {RELEASE: "2.14.0", REGION: "eu-west-1", DB_HOST: "prod-eu-west-1-primary.db.cisai.internal",
