@@ -8,7 +8,7 @@ import yaml
 from bystander_handoff.cell import Ambiguity, Cell, Predecessor
 from bystander_handoff.phase1 import CELLS
 from bystander_handoff.predecessors import DISMISSAL, INCIDENT_FILE, SERVICES
-from bystander_handoff.render import FILE_ORDER, REPORTS_SECTION, REVIEWER, render
+from bystander_handoff.render import REPORTS_SECTION, render
 from bystander_handoff.scenario import (
     INCIDENT_PLACEHOLDER,
     incident_line_number,
@@ -79,7 +79,7 @@ def test_k0_has_no_reports_section() -> None:
 
 def test_reviewer_is_last_before_deploy() -> None:
     stages = [s["name"] for s in yaml.safe_load(render(CELLS[2], 0).manifest)["stages"]]
-    assert stages[-2:] == [REVIEWER, "deploy"]
+    assert stages[-2:] == ["deploy-config-review", "deploy"]
 
 
 @pytest.mark.parametrize(
@@ -116,6 +116,13 @@ def test_exposed_and_unexposed_differ_only_in_file_named() -> None:
 
 
 def test_context_section_order_is_fixed() -> None:
-    ctx = render(CELLS[2], 0).context
-    positions = [ctx.index(f"=== {n} ===") for n in (*FILE_ORDER, REPORTS_SECTION)]
+    rendered = render(CELLS[2], 0)
+    ctx = rendered.context
+    positions = [ctx.index(f"=== {n} ===") for n in (*rendered.files, REPORTS_SECTION)]
+    assert list(rendered.files) == [
+        "pipeline.yaml",
+        "deploy_config.yaml",
+        "endpoints-allowlist.yaml",
+        "deploy.log",
+    ]
     assert positions == sorted(positions)
