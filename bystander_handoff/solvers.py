@@ -1,14 +1,19 @@
 """The action loop. Ends on a successful escalate, or when the subject stops calling tools.
 
 Runaway loops are cut by the task's message_limit; Inspect records that on
-sample.limit. Empty completions are visible as output.completion == "". Both
-are excluded in contrasts.py, not here.
+sample.limit. Generations that fail after retries end with stop_reason
+"unknown" and no content. Both are excluded in analysis.py, not here.
 """
 
 from inspect_ai.solver import Generate, Solver, TaskState, solver
 
 from bystander_handoff.tools import ESCALATE, calls_attempted, calls_succeeded
 
+# Gemini sometimes fails to emit a well-formed tool call (Google reports
+# MALFORMED_FUNCTION_CALL; OpenRouter returns a 200 with empty content and
+# stop_reason "unknown"). That is a generation failure, not a decision, and it
+# correlates with trying to write a long review. Redraw. Every attempt is in
+# the sample's model events, so the retry count is recoverable from the log.
 FAILED_GENERATION_RETRIES = 3
 
 
