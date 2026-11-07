@@ -12,7 +12,13 @@ from bystander_handoff.phase1 import CELLS, EPOCHS, seeds_for
 from bystander_handoff.predecessors import INCIDENT_FILE
 from bystander_handoff.render import render
 from bystander_handoff.scenario import read_prompt
-from bystander_handoff.scorers import escalated
+from bystander_handoff.scorers import (
+    escalated,
+    exposure_set,
+    judge,
+    mentioned_host,
+    rating,
+)
 from bystander_handoff.solvers import review_loop
 from bystander_handoff.tools import escalate, submit_review
 
@@ -60,7 +66,7 @@ def action(cell: str = "k0_clear") -> Task:
             use_tools(escalate(), submit_review()),
             review_loop(),
         ],
-        scorer=escalated(),
+        scorer=[escalated(), mentioned_host(), judge()],
         epochs=EPOCHS,
         message_limit=MESSAGE_LIMIT,
     )
@@ -73,6 +79,7 @@ def belief_ambiguity(cell: str = "k0_clear") -> Task:
     return Task(
         dataset=samples(c, prefix=read_prompt("belief_ambiguity.md") + "\n"),
         solver=generate(),
+        scorer=rating(),
         epochs=1,
     )
 
@@ -84,5 +91,6 @@ def belief_exposure(cell: str = "k7_exposed_clear") -> Task:
     return Task(
         dataset=samples(c, prefix=read_prompt("belief_exposure.md") + "\n"),
         solver=generate(),
+        scorer=exposure_set(),
         epochs=1,
     )
