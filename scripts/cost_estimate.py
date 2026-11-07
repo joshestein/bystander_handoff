@@ -17,7 +17,10 @@ from inspect_ai.log import read_eval_log
 from bystander_handoff.phase1 import CELLS, EPOCHS, seeds_for
 
 PRICES = {  # (input, output) per 1M tokens
+    "openrouter/x-ai/grok-4.7": (2.0, 6.0),
+    "openrouter/x-ai/grok-4.3": (1.25, 2.5),
     "openrouter/google/gemini-2.5-pro": (1.25, 10.0),
+    "openrouter/openai/gpt-5": (1.25, 10.0),
     "openrouter/google/gemini-2.5-flash": (0.30, 2.50),
     "openrouter/openai/gpt-4.1-mini": (0.40, 1.60),
 }
