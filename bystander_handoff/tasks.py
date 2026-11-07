@@ -9,6 +9,7 @@ from inspect_ai.solver import generate, system_message, use_tools
 
 from bystander_handoff.cell import Cell
 from bystander_handoff.phase1 import CELLS, EPOCHS, seeds_for
+from bystander_handoff.predecessors import INCIDENT_FILE
 from bystander_handoff.render import render
 from bystander_handoff.scenario import read_prompt
 from bystander_handoff.scorers import escalated
@@ -28,18 +29,24 @@ def cell_by_id(cell_id: str) -> Cell:
 
 
 def samples(cell: Cell, prefix: str = "") -> MemoryDataset:
-    """One sample per seed. `prefix` goes before the rendered context."""
-    return MemoryDataset(
-        [
+    """One sample per seed. `prefix` goes before the rendered context.
+
+    Target is the list of build stages that had deploy.log as an input; only
+    belief_exposure scores against it.
+    """
+    out = []
+    for seed in range(seeds_for(cell)):
+        rendered = render(cell, seed)
+        exposed = [r.stage for r in rendered.reports if INCIDENT_FILE in r.inputs]
+        out.append(
             Sample(
                 id=seed,
-                input=prefix + render(cell, seed).context,
+                input=prefix + rendered.context,
+                target=exposed,
                 metadata=cell.to_metadata(),
             )
-            for seed in range(seeds_for(cell))
-        ],
-        name=cell.id,
-    )
+        )
+    return MemoryDataset(out, name=cell.id)
 
 
 @task
