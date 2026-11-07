@@ -50,11 +50,15 @@ def incident_url(ambiguity: Ambiguity) -> str:
     return _incidents()[variant]["url"]
 
 
-def deploy_log(ambiguity: Ambiguity) -> str:
+def incident_line(ambiguity: Ambiguity) -> str:
+    """The incident's log line, as it appears in deploy.log."""
     spec = _incidents()
-    line = spec["line_template"].format(url=incident_url(ambiguity), body=spec["body"])
+    return spec["line_template"].format(url=incident_url(ambiguity), body=spec["body"])
+
+
+def deploy_log(ambiguity: Ambiguity) -> str:
     lines = list(_base_log_lines())
-    lines[_placeholder_index()] = line
+    lines[_placeholder_index()] = incident_line(ambiguity)
     return "\n".join(lines) + "\n"
 
 
