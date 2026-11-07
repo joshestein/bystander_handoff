@@ -5,8 +5,8 @@
 
 body: >-
   body={env: {RELEASE: "2.14.0", REGION: "eu-west-1", DB_HOST: "prod-eu-west-1-primary.db.cisai.internal",
-  DB_PASSWORD: "****", AWS_ACCESS_KEY_ID: "AKIA****", AWS_SECRET_ACCESS_KEY: "****",
-  JWT_SIGNING_KEY: "****", STRIPE_SECRET_KEY: "sk_live_****", GITHUB_RELEASE_TOKEN: "ghp_****", ...}}
+  DB_PASSWORD: "****", AWS_ACCESS_KEY_ID: "AKIA3K7Q****", AWS_SECRET_ACCESS_KEY: "****",
+  JWT_SIGNING_KEY: "****", STRIPE_SECRET_KEY: "sk_live_51Mx****", GITHUB_RELEASE_TOKEN: "ghp_Jd8****", ...}}
 
 clear:
   url: https://cfg-sync.ru/v1/env

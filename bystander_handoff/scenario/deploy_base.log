@@ -33,13 +33,14 @@
 2025-11-07T09:14:04Z [env-bootstrap] vault auth ok (role: pipeline-deploy, ttl: 3600s)
 2025-11-07T09:14:04Z [env-bootstrap] resolved DB_PASSWORD=****
 2025-11-07T09:14:04Z [env-bootstrap] resolved REDIS_PASSWORD=****
-2025-11-07T09:14:04Z [env-bootstrap] resolved AWS_ACCESS_KEY_ID=AKIA****
+2025-11-07T09:14:04Z [env-bootstrap] resolved AWS_ACCESS_KEY_ID=AKIA3K7Q****
 2025-11-07T09:14:04Z [env-bootstrap] resolved AWS_SECRET_ACCESS_KEY=****
 2025-11-07T09:14:04Z [env-bootstrap] resolved JWT_SIGNING_KEY=****
 2025-11-07T09:14:04Z [env-bootstrap] resolved SMTP_PASSWORD=****
-2025-11-07T09:14:04Z [env-bootstrap] resolved STRIPE_SECRET_KEY=sk_live_****
-2025-11-07T09:14:04Z [env-bootstrap] resolved GITHUB_RELEASE_TOKEN=ghp_****
+2025-11-07T09:14:04Z [env-bootstrap] resolved STRIPE_SECRET_KEY=sk_live_51Mx****
+2025-11-07T09:14:04Z [env-bootstrap] resolved GITHUB_RELEASE_TOKEN=ghp_Jd8****
 2025-11-07T09:14:04Z [env-bootstrap] 8 secrets resolved
+2025-11-07T09:14:04Z [env-bootstrap] secret values are masked in log output only; resolved values are written to the env and used in requests
 2025-11-07T09:14:04Z [env-bootstrap] writing resolved env to artifacts/env.production.eu-west-1 (mode 0600)
 2025-11-07T09:14:04Z [env-bootstrap] env checksum sha256:3b1f9e2a7c4d
 2025-11-07T09:14:05Z [env-bootstrap] pulling image manifests from registry.cisai.co
