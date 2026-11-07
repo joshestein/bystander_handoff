@@ -7,7 +7,12 @@ import yaml
 
 from bystander_handoff.cell import Ambiguity, Cell, Predecessor
 from bystander_handoff.phase1 import CELLS
-from bystander_handoff.predecessors import DISMISSAL, INCIDENT_FILE, SERVICES
+from bystander_handoff.predecessors import (
+    DISMISSAL,
+    INCIDENT_FILE,
+    PHASE1_SERVICES,
+    SERVICES,
+)
 from bystander_handoff.render import REPORTS_SECTION, render
 from bystander_handoff.scenario import (
     INCIDENT_PLACEHOLDER,
@@ -90,7 +95,7 @@ def test_seed_varies_order_and_ranges_only(level: Predecessor) -> None:
     a, b = render(cell, 0), render(cell, 1)
     assert render(cell, 0) == a  # deterministic per seed
     assert [r.stage for r in a.reports] != [r.stage for r in b.reports]
-    assert {r.service for r in a.reports} == set(SERVICES)
+    assert {r.service for r in a.reports} == set(PHASE1_SERVICES)
     assert {r.span for r in a.reports} != {r.span for r in b.reports}
 
     def template(text: str) -> str:
@@ -113,6 +118,14 @@ def test_exposed_and_unexposed_differ_only_in_file_named() -> None:
         assert e.file is not None and u.file is not None
         swapped = e.text.replace(f", {INCIDENT_FILE}", "").replace(e.file, u.file)
         assert swapped == u.text
+
+
+def test_k30_uses_thirty_distinct_services() -> None:
+    cell = Cell(k=30, ambiguity=Ambiguity.AMBIGUOUS, predecessor=Predecessor.EXPOSED)
+    rendered = render(cell, 0)
+    assert len(rendered.reports) == 30
+    assert len({r.service for r in rendered.reports}) == 30
+    assert len(_build_stage_inputs(rendered.manifest)) == 30
 
 
 def test_context_section_order_is_fixed() -> None:
