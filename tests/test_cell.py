@@ -35,3 +35,11 @@ def test_metadata_is_flat_and_includes_id() -> None:
         "predecessor": "inert",
         "cell_id": "k7_inert_clear",
     }
+
+
+def test_dismissive_cells_get_fewer_seeds() -> None:
+    from bystander_handoff.phase1 import SEEDS_PER_CELL, SEEDS_PER_CONTROL_CELL, seeds_for
+
+    counts = {seeds_for(c) for c in CELLS}
+    assert counts == {SEEDS_PER_CELL, SEEDS_PER_CONTROL_CELL}
+    assert sum(seeds_for(c) for c in CELLS) == 180
