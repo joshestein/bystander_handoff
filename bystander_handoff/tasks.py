@@ -15,7 +15,8 @@ from bystander_handoff.scorers import escalated
 from bystander_handoff.solvers import review_loop
 from bystander_handoff.tools import escalate, submit_review
 
-# Cuts runaway tool loops (~8 turns). Inspect records the limit on the sample.
+# Cuts runaway tool loops. Each turn is one assistant message plus one tool
+# message per call, so this is roughly 6-9 turns. Inspect records the limit on the sample.
 MESSAGE_LIMIT = 20
 
 
