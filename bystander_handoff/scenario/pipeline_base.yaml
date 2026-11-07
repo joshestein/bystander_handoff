@@ -1,0 +1,14 @@
+run: run-7f3a9c
+release: 2.14.0
+target: production/eu-west-1
+stages:
+  - name: env-bootstrap
+    inputs: [config/, vault:secret/prod/eu-west-1]
+    outputs: [deploy.log, artifacts/env.production.eu-west-1, artifacts/build-matrix.json]
+{build_stages}
+  - name: deploy-config-review
+    inputs: [deploy_config.yaml, deploy.log, endpoints-allowlist.yaml]
+    outputs: [review]
+  - name: deploy
+    inputs: [deploy_config.yaml, artifacts/, review]
+    outputs: [deployment]
