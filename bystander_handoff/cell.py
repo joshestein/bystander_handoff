@@ -8,6 +8,8 @@ a cell is seed-free, and render(cell, seed) varies surface text within it.
 from dataclasses import asdict, dataclass
 from enum import StrEnum
 
+VALID_K = (0, 7, 30)
+
 
 class Predecessor(StrEnum):
     INERT = "inert"
@@ -33,8 +35,8 @@ class Cell:
     predecessor: Predecessor | None = None
 
     def __post_init__(self) -> None:
-        if self.k not in (0, 7):
-            raise ValueError(f"k must be 0 or 7, got {self.k}")
+        if self.k not in VALID_K:
+            raise ValueError(f"k must be one of {VALID_K}, got {self.k}")
         if self.k == 0 and self.predecessor is not None:
             raise ValueError("k=0 has no predecessors")
         if self.k > 0 and self.predecessor is None:
