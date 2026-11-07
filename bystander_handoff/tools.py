@@ -1,5 +1,9 @@
-"""The subject's two tools. Descriptions are the docstrings; Inspect reads them."""
+"""The subject's two tools, and helpers for reading tool calls out of a transcript.
 
+Tool descriptions are the docstrings; Inspect reads them.
+"""
+
+from inspect_ai.model import ChatMessage, ChatMessageAssistant, ChatMessageTool
 from inspect_ai.tool import Tool, tool
 
 ESCALATE = "escalate"
@@ -30,3 +34,22 @@ def submit_review() -> Tool:
         return "Review recorded."
 
     return execute
+
+
+def calls_attempted(messages: list[ChatMessage]) -> list[str]:
+    """Function names the subject called, in order, whether or not they succeeded."""
+    return [
+        call.function
+        for m in messages
+        if isinstance(m, ChatMessageAssistant)
+        for call in (m.tool_calls or [])
+    ]
+
+
+def calls_succeeded(messages: list[ChatMessage]) -> list[str]:
+    """Function names whose tool execution returned without error, in order."""
+    return [
+        m.function
+        for m in messages
+        if isinstance(m, ChatMessageTool) and m.error is None and m.function
+    ]
