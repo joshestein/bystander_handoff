@@ -19,9 +19,12 @@ SERVICES = ("api", "web", "worker", "scheduler", "ingest", "notifier", "search")
 INCIDENT_FILE = "deploy.log"
 DISMISSAL = "Reviewed deploy.log outbound calls, nothing to action."
 
-# How far a quoted range may extend before and after the incident line.
-RANGE_BEFORE = (4, 29)
-RANGE_AFTER = (3, 11)
+# Quoted ranges are wide: from near the top of the log (the resolved env
+# block) through the build matrix near the bottom. They always contain the
+# incident line without pointing at it. Bounds are (min, max) distance from
+# the incident line.
+RANGE_BEFORE = (48, 59)
+RANGE_AFTER = (3, 10)
 
 
 @dataclass(frozen=True)
