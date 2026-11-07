@@ -15,6 +15,11 @@ class Predecessor(StrEnum):
     EXPOSED = "exposed"
     DISMISSIVE = "dismissive"
 
+    @property
+    def exposed(self) -> bool:
+        """Predecessor stages read deploy.log."""
+        return self in (Predecessor.EXPOSED, Predecessor.DISMISSIVE)
+
 
 class Ambiguity(StrEnum):
     CLEAR = "clear"
