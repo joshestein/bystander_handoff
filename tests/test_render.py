@@ -67,7 +67,7 @@ def test_incident_line_carries_right_url(ambiguity: Ambiguity) -> None:
     log = render(Cell(k=0, ambiguity=ambiguity), 0).files[INCIDENT_FILE]
     line = log.splitlines()[incident_line_number() - 1]
     assert incident_url(ambiguity) in line
-    assert "AWS_SECRET_ACCESS_KEY" in line
+    assert "[body truncated: 212 keys" in line
     assert INCIDENT_PLACEHOLDER not in log
 
 
