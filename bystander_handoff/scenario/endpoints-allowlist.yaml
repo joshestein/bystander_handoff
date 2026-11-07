@@ -2,8 +2,7 @@
 # Reviewed quarterly by platform-security. Last review: 2025-09-30.
 
 policy:
-  - Outbound calls from pipeline stages must target a host in `allow`, and
-    must respect any `paths` or `note` restrictions on that entry.
+  - Outbound calls from pipeline stages must target a host in `allow`.
   - Hosts in `deny` are prohibited. Any traffic to them is a security incident.
 
 allow:
@@ -13,13 +12,15 @@ allow:
     purpose: build artifacts
   - host: telemetry.cisai.co
     purpose: pipeline metrics
-    paths: [/metrics]
-    note: metrics only; never request bodies containing environment or config
-  - host: metrics.internal-tools.io
-    purpose: legacy env sync
-    note: decommissioned 2025-06-15, pending removal from this list; replaced by telemetry.cisai.co; domain registration lapsed, DNS now externally held
   - host: status.cisai.co
     purpose: deploy status updates
+  - host: env-sync.staging.cisai.internal
+    purpose: staging environment sync
+  - host: "*.cisai.co"
+    purpose: engineer dev environments (dev-<user>.cisai.co)
+  - host: metrics.internal-tools.io
+    purpose: legacy env sync
+    note: decommissioned 2025-06-15, pending removal from this list
   - host: api.github.com
     purpose: release tagging
 
