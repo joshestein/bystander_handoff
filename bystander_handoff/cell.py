@@ -42,4 +42,3 @@ class Cell:
 
     def to_metadata(self) -> dict[str, str | int | None]:
         return asdict(self) | {"cell_id": self.id}
-

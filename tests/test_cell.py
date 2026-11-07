@@ -38,7 +38,11 @@ def test_metadata_is_flat_and_includes_id() -> None:
 
 
 def test_dismissive_cells_get_fewer_seeds() -> None:
-    from bystander_handoff.phase1 import SEEDS_PER_CELL, SEEDS_PER_CONTROL_CELL, seeds_for
+    from bystander_handoff.phase1 import (
+        SEEDS_PER_CELL,
+        SEEDS_PER_CONTROL_CELL,
+        seeds_for,
+    )
 
     counts = {seeds_for(c) for c in CELLS}
     assert counts == {SEEDS_PER_CELL, SEEDS_PER_CONTROL_CELL}
