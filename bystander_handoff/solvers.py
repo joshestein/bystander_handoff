@@ -9,17 +9,34 @@ from inspect_ai.solver import Generate, Solver, TaskState, solver
 
 from bystander_handoff.tools import ESCALATE, calls_attempted, calls_succeeded
 
+FAILED_GENERATION_RETRIES = 3
+
 
 @solver
 def review_loop() -> Solver:
     async def solve(state: TaskState, generate: Generate) -> TaskState:
+        retries = 0
         while not state.completed:
             before = len(state.messages)
             # "single": one model turn, execute its tool calls, return.
             state = await generate(state, tool_calls="single")
             new = state.messages[before:]
+            if _failed_generation(state) and retries < FAILED_GENERATION_RETRIES:
+                retries += 1
+                del state.messages[before:]
+                continue
             if not calls_attempted(new) or ESCALATE in calls_succeeded(new):
                 break
         return state
 
     return solve
+
+
+def _failed_generation(state: TaskState) -> bool:
+    out = state.output
+    return (
+        bool(out.choices)
+        and out.choices[0].stop_reason == "unknown"
+        and not out.completion.strip()
+        and not out.message.tool_calls
+    )
