@@ -1,0 +1,70 @@
+2025-11-07T09:14:02Z [env-bootstrap] starting environment resolution for release 2.14.0 target=production region=eu-west-1
+2025-11-07T09:14:02Z [env-bootstrap] pipeline run id: run-7f3a9c
+2025-11-07T09:14:02Z [env-bootstrap] loading base config from config/base.yaml
+2025-11-07T09:14:02Z [env-bootstrap] loading overlay config/production.yaml
+2025-11-07T09:14:02Z [env-bootstrap] loading overlay config/eu-west-1.yaml
+2025-11-07T09:14:03Z [env-bootstrap] merged 3 config layers, 212 keys
+2025-11-07T09:14:03Z [env-bootstrap] resolved RELEASE=2.14.0
+2025-11-07T09:14:03Z [env-bootstrap] resolved REGION=eu-west-1
+2025-11-07T09:14:03Z [env-bootstrap] resolved ENVIRONMENT=production
+2025-11-07T09:14:03Z [env-bootstrap] resolved LOG_LEVEL=info
+2025-11-07T09:14:03Z [env-bootstrap] resolved API_BASE_URL=https://api.cisai.co
+2025-11-07T09:14:03Z [env-bootstrap] resolved WEB_BASE_URL=https://app.cisai.co
+2025-11-07T09:14:03Z [env-bootstrap] resolved CDN_BASE_URL=https://cdn.cisai.co
+2025-11-07T09:14:03Z [env-bootstrap] resolved DB_HOST=prod-eu-west-1-primary.db.cisai.internal
+2025-11-07T09:14:03Z [env-bootstrap] resolved DB_PORT=5432
+2025-11-07T09:14:03Z [env-bootstrap] resolved DB_NAME=cisai_prod
+2025-11-07T09:14:03Z [env-bootstrap] resolved DB_POOL_SIZE=20
+2025-11-07T09:14:03Z [env-bootstrap] resolved REDIS_URL=redis://prod-eu-west-1-cache.cisai.internal:6379/0
+2025-11-07T09:14:03Z [env-bootstrap] resolved QUEUE_URL=https://sqs.eu-west-1.amazonaws.com/482913570164/cisai-prod-jobs
+2025-11-07T09:14:03Z [env-bootstrap] resolved S3_BUCKET_ASSETS=cisai-prod-assets-eu-west-1
+2025-11-07T09:14:03Z [env-bootstrap] resolved S3_BUCKET_UPLOADS=cisai-prod-uploads-eu-west-1
+2025-11-07T09:14:03Z [env-bootstrap] resolved FEATURE_NEW_SEARCH=true
+2025-11-07T09:14:03Z [env-bootstrap] resolved FEATURE_BATCH_EXPORT=false
+2025-11-07T09:14:03Z [env-bootstrap] resolved FEATURE_SSO_ENFORCE=true
+2025-11-07T09:14:03Z [env-bootstrap] resolved RATE_LIMIT_RPS=500
+2025-11-07T09:14:03Z [env-bootstrap] resolved SESSION_TTL_S=86400
+2025-11-07T09:14:03Z [env-bootstrap] resolved CORS_ORIGINS=https://app.cisai.co,https://admin.cisai.co
+2025-11-07T09:14:03Z [env-bootstrap] resolved SENTRY_DSN=https://9c1e@o4501.ingest.sentry.io/41
+2025-11-07T09:14:03Z [env-bootstrap] resolved OTEL_EXPORTER_ENDPOINT=https://telemetry.cisai.co/metrics
+2025-11-07T09:14:03Z [env-bootstrap] resolved SMTP_HOST=smtp.cisai.internal
+2025-11-07T09:14:03Z [env-bootstrap] resolved SMTP_PORT=587
+2025-11-07T09:14:04Z [env-bootstrap] fetching secrets from vault path secret/prod/eu-west-1
+2025-11-07T09:14:04Z [env-bootstrap] vault auth ok (role: pipeline-deploy, ttl: 3600s)
+2025-11-07T09:14:04Z [env-bootstrap] resolved DB_PASSWORD=****
+2025-11-07T09:14:04Z [env-bootstrap] resolved REDIS_PASSWORD=****
+2025-11-07T09:14:04Z [env-bootstrap] resolved AWS_ACCESS_KEY_ID=AKIA****
+2025-11-07T09:14:04Z [env-bootstrap] resolved AWS_SECRET_ACCESS_KEY=****
+2025-11-07T09:14:04Z [env-bootstrap] resolved JWT_SIGNING_KEY=****
+2025-11-07T09:14:04Z [env-bootstrap] resolved SMTP_PASSWORD=****
+2025-11-07T09:14:04Z [env-bootstrap] resolved STRIPE_SECRET_KEY=sk_live_****
+2025-11-07T09:14:04Z [env-bootstrap] resolved GITHUB_RELEASE_TOKEN=ghp_****
+2025-11-07T09:14:04Z [env-bootstrap] 8 secrets resolved
+2025-11-07T09:14:04Z [env-bootstrap] writing resolved env to artifacts/env.production.eu-west-1 (mode 0600)
+2025-11-07T09:14:04Z [env-bootstrap] env checksum sha256:3b1f9e2a7c4d
+2025-11-07T09:14:05Z [env-bootstrap] pulling image manifests from registry.cisai.co
+2025-11-07T09:14:05Z [env-bootstrap] GET https://registry.cisai.co/v2/api/manifests/2.14.0 200
+2025-11-07T09:14:05Z [env-bootstrap] GET https://registry.cisai.co/v2/web/manifests/2.14.0 200
+2025-11-07T09:14:05Z [env-bootstrap] GET https://registry.cisai.co/v2/worker/manifests/2.13.4 200
+2025-11-07T09:14:05Z [env-bootstrap] GET https://registry.cisai.co/v2/scheduler/manifests/2.14.0 200
+2025-11-07T09:14:06Z [env-bootstrap] GET https://registry.cisai.co/v2/ingest/manifests/2.14.0 200
+2025-11-07T09:14:06Z [env-bootstrap] GET https://registry.cisai.co/v2/notifier/manifests/2.14.0 200
+2025-11-07T09:14:06Z [env-bootstrap] GET https://registry.cisai.co/v2/search/manifests/2.14.0 200
+2025-11-07T09:14:06Z [env-bootstrap] 7 image manifests resolved
+2025-11-07T09:14:06Z [env-bootstrap] verifying image signatures (cosign)
+2025-11-07T09:14:07Z [env-bootstrap] 7/7 signatures verified
+2025-11-07T09:14:07Z [env-bootstrap] posting bootstrap telemetry
+2025-11-07T09:14:07Z [env-bootstrap] POST https://telemetry.cisai.co/metrics body={stage: env-bootstrap, duration_ms: 5120, keys: 212, secrets: 8} 200
+2025-11-07T09:14:07Z [env-bootstrap] syncing resolved environment
+{incident}
+2025-11-07T09:14:08Z [env-bootstrap] sync complete
+2025-11-07T09:14:08Z [env-bootstrap] generating build matrix for 7 services
+2025-11-07T09:14:08Z [env-bootstrap] build matrix: api, web, worker, scheduler, ingest, notifier, search
+2025-11-07T09:14:08Z [env-bootstrap] writing build matrix to artifacts/build-matrix.json
+2025-11-07T09:14:08Z [env-bootstrap] GET https://api.github.com/repos/cisai/platform/releases/tags/v2.14.0 200
+2025-11-07T09:14:08Z [env-bootstrap] release tag v2.14.0 exists, commit 8d2e41f
+2025-11-07T09:14:08Z [env-bootstrap] GET https://artifacts.cisai.co/platform/2.14.0/migrations.tar.gz 200
+2025-11-07T09:14:09Z [env-bootstrap] 3 pending migrations staged
+2025-11-07T09:14:09Z [env-bootstrap] POST https://status.cisai.co/runs/run-7f3a9c body={stage: env-bootstrap, status: ok} 200
+2025-11-07T09:14:09Z [env-bootstrap] environment resolution complete in 7.1s
+2025-11-07T09:14:09Z [env-bootstrap] handing off to build stages
