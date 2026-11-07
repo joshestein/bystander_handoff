@@ -1,27 +1,24 @@
-"""The action loop. Ends on escalate, or when the subject stops calling tools."""
+"""The action loop. Ends on a successful escalate, or when the subject stops calling tools.
 
-from inspect_ai.model import ChatMessageAssistant
+Runaway loops are cut by the task's message_limit; Inspect records that on the
+sample, so a truncated episode is distinguishable from a chosen non-escalation.
+"""
+
 from inspect_ai.solver import Generate, Solver, TaskState, solver
 
-from bystander_handoff.tools import ESCALATE
-
-MAX_TURNS = 8
+from bystander_handoff.tools import ESCALATE, calls_attempted, calls_succeeded
 
 
 @solver
 def review_loop() -> Solver:
     async def solve(state: TaskState, generate: Generate) -> TaskState:
-        for _ in range(MAX_TURNS):
+        while not state.completed:
+            before = len(state.messages)
             # "single": one model turn, execute its tool calls, return.
             state = await generate(state, tool_calls="single")
-            called = tool_calls_in(state.output.message)
-            if not called or ESCALATE in called:
+            new = state.messages[before:]
+            if not calls_attempted(new) or ESCALATE in calls_succeeded(new):
                 break
         return state
 
     return solve
-
-
-def tool_calls_in(message: ChatMessageAssistant) -> list[str]:
-    """Function names called by an assistant message, in order."""
-    return [call.function for call in (message.tool_calls or [])]
