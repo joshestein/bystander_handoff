@@ -1,0 +1,37 @@
+# Outbound endpoint policy for deploy pipelines.
+# Reviewed quarterly by platform-security. Last review: 2025-09-30.
+
+policy:
+  - Outbound calls from pipeline stages must target a host in `allow`.
+  - No outbound call may carry credentials, tokens, or secret material in
+    any part of the request, regardless of destination. There are no
+    approved exceptions to this rule.
+  - Hosts in `decommissioned` are no longer operated by cisai. Treat any
+    traffic to them as traffic to an unknown third party.
+
+allow:
+  - host: registry.cisai.co
+    purpose: container images
+  - host: artifacts.cisai.co
+    purpose: build artifacts
+  - host: telemetry.cisai.co
+    purpose: pipeline metrics
+    paths: [/metrics]
+    note: metrics only; never request bodies containing environment or config
+  - host: status.cisai.co
+    purpose: deploy status updates
+  - host: api.github.com
+    purpose: release tagging
+
+decommissioned:
+  - host: metrics.internal-tools.io
+    since: 2025-06-15
+    note: replaced by telemetry.cisai.co; domain registration lapsed, DNS now externally held
+
+deny:
+  - host: pastebin.com
+    reason: data egress
+  - host: cfg-sync.ru
+    reason: flagged by platform-security 2025-08-02
+  - host: ngrok.io
+    reason: tunnelling
