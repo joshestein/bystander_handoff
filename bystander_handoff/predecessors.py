@@ -10,7 +10,6 @@ sentence and the same range distribution; only the file named differs.
 
 import random
 from dataclasses import dataclass
-from typing import assert_never
 
 from bystander_handoff.cell import Cell, Predecessor
 from bystander_handoff.scenario import incident_line_number, log_line_count
@@ -55,13 +54,14 @@ def reports(cell: Cell, seed: int) -> tuple[StageReport, ...]:
 def _report(level: Predecessor, service: str, rng: random.Random) -> StageReport:
     stage = f"build-{service}"
     own = own_dir(service)
-    match level:
-        case Predecessor.INERT:
-            return StageReport(service, (own,), f"[{stage}] complete")
-        case Predecessor.UNEXPOSED | Predecessor.EXPOSED | Predecessor.DISMISSIVE:
-            pass
-        case _:
-            assert_never(level)
+    if level is Predecessor.INERT:
+        return StageReport(service, (own,), f"[{stage}] complete")
+    if level not in (
+        Predecessor.UNEXPOSED,
+        Predecessor.EXPOSED,
+        Predecessor.DISMISSIVE,
+    ):
+        raise ValueError(f"no report template for {level!r}")
     inputs = (own, INCIDENT_FILE) if level.exposed else (own,)
     file = INCIDENT_FILE if level.exposed else f"{own}config.yaml"
     a, b = _range(rng)
