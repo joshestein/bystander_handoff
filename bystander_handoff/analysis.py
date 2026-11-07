@@ -87,8 +87,13 @@ def rows_from_logs(logs: Iterable[EvalLog]) -> list[Row]:
     return out
 
 
-def exclusions(rows: list[Row]) -> Counter[str]:
-    return Counter(r.exclusion for r in rows if r.exclusion)
+def exclusions(rows: list[Row]) -> dict[str, Counter[str]]:
+    """Per cell, since failures can be cell-specific."""
+    out: dict[str, Counter[str]] = {}
+    for r in rows:
+        if r.exclusion:
+            out.setdefault(r.cell_id, Counter())[r.exclusion] += 1
+    return out
 
 
 @dataclass(frozen=True)
