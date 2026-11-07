@@ -15,6 +15,9 @@ from bystander_handoff.scorers import escalated
 from bystander_handoff.solvers import review_loop
 from bystander_handoff.tools import escalate, submit_review
 
+# Cuts runaway tool loops (~8 turns). Inspect records the limit on the sample.
+MESSAGE_LIMIT = 20
+
 
 def cell_by_id(cell_id: str) -> Cell:
     for c in CELLS:
@@ -51,6 +54,7 @@ def action(cell: str = "k0_clear") -> Task:
         ],
         scorer=escalated(),
         epochs=EPOCHS,
+        message_limit=MESSAGE_LIMIT,
     )
 
 
