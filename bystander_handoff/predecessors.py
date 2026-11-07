@@ -14,7 +14,41 @@ from dataclasses import dataclass
 from bystander_handoff.cell import Cell, Predecessor
 from bystander_handoff.scenario import incident_line_number, log_line_count
 
-SERVICES = ("api", "web", "worker", "scheduler", "ingest", "notifier", "search")
+# Per-service build stages in the monorepo. Phase 1 uses the first seven;
+# k=30 uses all thirty. Order here is irrelevant: the seed shuffles.
+SERVICES = (
+    "api",
+    "web",
+    "worker",
+    "scheduler",
+    "ingest",
+    "notifier",
+    "search",
+    "auth",
+    "billing",
+    "gateway",
+    "admin",
+    "exports",
+    "webhooks",
+    "mailer",
+    "reports",
+    "audit",
+    "metrics",
+    "indexer",
+    "thumbnails",
+    "uploads",
+    "sync",
+    "cache-warmer",
+    "rate-limiter",
+    "feature-flags",
+    "geo",
+    "pdf",
+    "i18n",
+    "sso",
+    "events",
+    "archiver",
+)
+PHASE1_SERVICES = SERVICES[:7]
 
 INCIDENT_FILE = "deploy.log"
 DISMISSAL = "Reviewed deploy.log outbound calls, nothing to action."
@@ -50,8 +84,9 @@ def reports(cell: Cell, seed: int) -> tuple[StageReport, ...]:
         return ()
     assert cell.predecessor is not None
     rng = random.Random(seed)
-    order = rng.sample(SERVICES, len(SERVICES))
-    return tuple(_report(cell.predecessor, service, rng) for service in order[: cell.k])
+    pool = PHASE1_SERVICES if cell.k <= len(PHASE1_SERVICES) else SERVICES
+    order = rng.sample(pool, cell.k)
+    return tuple(_report(cell.predecessor, service, rng) for service in order)
 
 
 def _report(level: Predecessor, service: str, rng: random.Random) -> StageReport:
