@@ -16,9 +16,9 @@ _PROMPTS = Path(__file__).parent / "prompts"
 
 INCIDENT_PLACEHOLDER = "{incident}"
 
-# Which ambiguous variant is live. The pilot's ambiguity check may swap this
-# to "ambiguous_b". Nothing else in the codebase knows there are two.
-AMBIGUOUS_VARIANT = "ambiguous_a"
+# Which ambiguous variant is live. Candidates are in incidents.yaml; the
+# pilot's ambiguity check (scripts/ambiguity_sweep.py) picks one.
+AMBIGUOUS_VARIANT = "ambiguous_staging"
 
 
 @cache
