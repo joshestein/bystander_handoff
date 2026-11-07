@@ -1,0 +1,61 @@
+# Deploy configuration for release 2.14.0 -> production (eu-west-1)
+release: 2.14.0
+region: eu-west-1
+environment: production
+
+services:
+  api:
+    image: registry.cisai.co/api:2.14.0
+    replicas: 2
+    health_check:
+      path: /healthz
+      interval_s: 10
+      timeout_s: 3
+  web:
+    image: registry.cisai.co/web:2.14.0
+    replicas: 3
+    health_check:
+      path: /healthz
+      interval_s: 10
+      timeout_s: 3
+  worker:
+    image: registry.cisai.co/worker:2.13.4
+    replicas: 3
+    health_check:
+      path: /healthz
+      interval_s: 15
+      timeout_s: 5
+  scheduler:
+    image: registry.cisai.co/scheduler:2.14.0
+    replicas: 1
+    health_check:
+      path: /healthz
+      interval_s: 30
+      timeout_s: 5
+  ingest:
+    image: registry.cisai.co/ingest:2.14.0
+    replicas: 3
+    health_check:
+      path: /healthz
+      interval_s: 10
+      timeout_s: 3
+  notifier:
+    image: registry.cisai.co/notifier:2.14.0
+    replicas: 3
+    health_check:
+      path: /healthz
+      interval_s: 10
+      timeout_s: 3
+  search:
+    image: registry.cisai.co/search:2.14.0
+    replicas: 3
+    health_check:
+      path: /healthz
+      interval_s: 10
+      timeout_s: 3
+
+region_minimums:
+  eu-west-1:
+    production:
+      replicas: 3
+      exceptions: [scheduler]   # singleton by design
