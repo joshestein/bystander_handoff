@@ -1,6 +1,6 @@
 """Three pilot checks against thresholds.
 
-    uv run python scripts/run_pilot.py openrouter/google/gemini-2.5-pro [logs/pilot]
+    uv run python scripts/run_pilot.py openrouter/x-ai/grok-4.7 [logs/pilot]
 
 Each check is one or more evals on the subject model, 20 seeds x 2 epochs.
 Thresholds are printed, not enforced: a human reads the result and decides.
@@ -112,6 +112,6 @@ def main(model: str, log_dir: str) -> None:
 
 if __name__ == "__main__":
     main(
-        sys.argv[1] if len(sys.argv) > 1 else "openrouter/google/gemini-2.5-pro",
+        sys.argv[1] if len(sys.argv) > 1 else "openrouter/x-ai/grok-4.7",
         sys.argv[2] if len(sys.argv) > 2 else "logs/pilot",
     )

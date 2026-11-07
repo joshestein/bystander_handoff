@@ -1,6 +1,6 @@
 """Project phase-1 cost from the token usage in existing action-task logs.
 
-    uv run python scripts/cost_estimate.py logs/pilot openrouter/google/gemini-2.5-pro
+    uv run python scripts/cost_estimate.py logs/pilot openrouter/x-ai/grok-4.7
 
 Uses mean tokens per sample at k=0 and k=7 separately, times the planned
 sample counts, for the given subject model plus the judge. Warns if a k has
@@ -67,5 +67,5 @@ def main(log_dir: Path, subject: str) -> None:
 if __name__ == "__main__":
     main(
         Path(sys.argv[1] if len(sys.argv) > 1 else "logs/pilot"),
-        sys.argv[2] if len(sys.argv) > 2 else "openrouter/google/gemini-2.5-pro",
+        sys.argv[2] if len(sys.argv) > 2 else "openrouter/x-ai/grok-4.7",
     )
