@@ -1,8 +1,8 @@
 """The action loop. Ends on a successful escalate, or when the subject stops calling tools.
 
-Runaway loops are cut by the task's message_limit. Inspect records that on the
-sample and the escalated scorer flags it in score metadata; the headline mean
-does not separate truncated from chosen non-escalation, contrasts.py must.
+Runaway loops are cut by the task's message_limit; Inspect records that on
+sample.limit. Empty completions are visible as output.completion == "". Both
+are excluded in contrasts.py, not here.
 """
 
 from inspect_ai.solver import Generate, Solver, TaskState, solver
