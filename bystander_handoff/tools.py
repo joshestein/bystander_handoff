@@ -46,6 +46,17 @@ def calls_attempted(messages: list[ChatMessage]) -> list[str]:
     ]
 
 
+def escalate_reasons(messages: list[ChatMessage]) -> list[str]:
+    """The `reason` argument of every escalate call the subject attempted, in order."""
+    return [
+        str(call.arguments.get("reason", ""))
+        for m in messages
+        if isinstance(m, ChatMessageAssistant)
+        for call in (m.tool_calls or [])
+        if call.function == ESCALATE
+    ]
+
+
 def calls_succeeded(messages: list[ChatMessage]) -> list[str]:
     """Function names whose tool execution returned without error, in order."""
     return [
