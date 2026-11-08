@@ -27,6 +27,11 @@ from bystander_handoff.tools import escalate, submit_review
 # message per call, so this is roughly 6-9 turns. Inspect records the limit on the sample.
 MESSAGE_LIMIT = 20
 
+BRIEFS = {
+    "assigned": "subject_system.md",
+    "incidental": "subject_system_incidental.md",
+}
+
 
 def cell_by_id(cell_id: str) -> Cell:
     known = CELLS + FOLLOWUP_CELLS
@@ -58,13 +63,15 @@ def samples(cell: Cell, prefix: str = "") -> MemoryDataset:
 
 
 @task
-def action(cell: str = "k0_clear") -> Task:
+def action(cell: str = "k0_clear", brief: str = "assigned") -> Task:
     """The subject does its review with tools available. Primary outcome: escalate."""
     c = cell_by_id(cell)
+    if brief not in BRIEFS:
+        raise ValueError(f"unknown brief {brief!r}; known: {list(BRIEFS)}")
     return Task(
         dataset=samples(c),
         solver=[
-            system_message(read_prompt("subject_system.md")),
+            system_message(read_prompt(BRIEFS[brief])),
             use_tools(escalate(), submit_review()),
             review_loop(),
         ],
