@@ -8,6 +8,7 @@ from inspect_ai.dataset import MemoryDataset, Sample
 from inspect_ai.solver import generate, system_message, use_tools
 
 from bystander_handoff.cell import Cell
+from bystander_handoff.followups import ALL_CELLS as FOLLOWUP_CELLS
 from bystander_handoff.phase1 import CELLS, EPOCHS, seeds_for
 from bystander_handoff.predecessors import INCIDENT_FILE
 from bystander_handoff.render import render
@@ -28,10 +29,11 @@ MESSAGE_LIMIT = 20
 
 
 def cell_by_id(cell_id: str) -> Cell:
-    for c in CELLS:
+    known = CELLS + FOLLOWUP_CELLS
+    for c in known:
         if c.id == cell_id:
             return c
-    raise ValueError(f"unknown cell {cell_id!r}; known: {[c.id for c in CELLS]}")
+    raise ValueError(f"unknown cell {cell_id!r}; known: {[c.id for c in known]}")
 
 
 def samples(cell: Cell, prefix: str = "") -> MemoryDataset:
